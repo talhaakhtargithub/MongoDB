@@ -61,4 +61,4 @@ async function removeCourse(id) {
 // removeCourse('your_course_id_here')
 
 // Uncomment to execute createCourse function
-// createCourse();
+createCourse();
