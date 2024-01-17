@@ -31,7 +31,7 @@ router.post('/',  async (req, res) => {
     let genre =new Genre({name: req.body.name})
 
 
-    await genre.save()
+    genre=await genre.save()
     res.send(genre)
 
 })
