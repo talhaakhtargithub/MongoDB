@@ -25,7 +25,7 @@ async function createCourse() {
     });
 
     try {
-        const result = await course.save();
+        const result = await course.validate();
         console.log(result);
     } catch (error) {
         console.error('Error creating course:', error.message);
@@ -40,10 +40,10 @@ async function getCourses() {
 
     const courses = await Course
         .find({ author: 'Talha', isPublished: true })
-        .skip((pageNum - 1) * pageSize)
-        .limit(pageSize)
-        .sort({ name: 1 })
-        .count();
+        // .skip((pageNum - 1) * pageSize)
+        // .limit(pageSize)
+        // .sort({ name: 1 })
+        // .count();
     console.log(courses);
     mongoose.connection.close();
 }
@@ -55,10 +55,10 @@ async function removeCourse(id) {
 }
 
 // Uncomment to execute getCourses function
-// getCourses()
+getCourses()
 
 // Uncomment to execute removeCourse function
 // removeCourse('your_course_id_here')
 
 // Uncomment to execute createCourse function
-createCourse();
+//createCourse();
