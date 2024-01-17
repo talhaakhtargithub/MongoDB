@@ -3,43 +3,51 @@ mongoose.connect('mongodb://localhost/talha')
     .then(() => console.log('Connected To mongoDb'))
     .catch(err => console.error('Could not connect'))
 
+const authorSchema = new mongoose.Schema({
+    name: String,
+    bio: String,
+    website: String
+})
+const Author = mongoose.model('Author', authorSchema);
 
-const Author = mongoose.model('Author', new mongoose.Schema({
-    name:String,
-    bio:String,
-    website:String
-}));
+
+const Course = mongoose.model('Course', new mongoose.Schema({
+    name: String,
+    // author:{
+    //     type:mongoose.Schema.Types.ObjectId,
+    //     ref:'Author'
+    // }
+    // authors: {
+    //     type: authorSchema,
+    //     required: true
+    // }
 
 
-const Course=mongoose.model('Course',new mongoose.Schema({
-    name:String,
-    author:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'Author'
-    }
+
+    authors:[authorSchema]
 
 }))
 
 
 
-async function createAuthor(name,bio,website) {
-    const author=new Author({
-         name,
-         bio,
-         website
-    })
-
-    const result=await author.save()
-    console.log(result);
-}
-
-async function createCourse(name,author) {
-    const course=new Course({
+async function createAuthor(name, bio, website) {
+    const author = new Author({
         name,
-        author
+        bio,
+        website
     })
 
-    const result=await course.save()
+    const result = await authors.save()
+    console.log(result);
+} 
+
+async function createCourse(name, authors) {
+    const course = new Course({
+        name,
+        authors
+    })
+
+    const result = await course.save()
     console.log(result);
 }
 
@@ -47,17 +55,29 @@ async function createCourse(name,author) {
 
 async function listCourses() {
 
-    const courses=await Course
-    .find()
-    .select('name');
+    const courses = await Course
+        .find()
+        .populate('authors', 'name -_id')
+        //.populate('category','name')
+        .select('name authors');
 
     console.log(courses);
-    
+
+}
+async function updateAuthor(courseId) {
+    const course = await Course.findOneAndUpdate(
+        { _id: courseId },
+        { $unset: { 'authors.name': 'Talha APK' } },
+        { new: true } // This option returns the modified document
+    );
+    // course.author.name='talha akhtar'
+    course.save()
 }
 
 
-// createAuthor('Talha','My Bio','My Website')
- createCourse('Akhar','65a80fd7b1eb2f0e05309444')
+//createAuthor('Talha','My Bio','My Website')
+//createCourse('Anjum',new Author({name:'talha'}))
 
- listCourses()
+updateAuthor('65a816e9aa178c33ba0bf911')
+listCourses()
 
