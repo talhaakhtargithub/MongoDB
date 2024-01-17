@@ -75,9 +75,20 @@ async function updateAuthor(courseId) {
 }
 
 
+async function addAuthor(courseId,author) {
+    const course=await Course.findById(courseId)
+    console.log(course);
+    course.authors.push(author )
+    course.save()
+    
+}
+
 //createAuthor('Talha','My Bio','My Website')
-//createCourse('Anjum',new Author({name:'talha'}))
+// createCourse('Anjum',[
+//     new Author({name:'talha'}),
+//     new Author({name:'Akhtar'})
+// ])
 
-updateAuthor('65a816e9aa178c33ba0bf911')
-listCourses()
-
+// updateAuthor('65a816e9aa178c33ba0bf911')
+// listCourses()
+addAuthor('65a81c18a23c02f827c2dc8b','Mosh')
